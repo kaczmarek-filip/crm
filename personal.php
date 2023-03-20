@@ -24,7 +24,8 @@
                         foreach($query as $row)
                         {
                             echo '<span class="icon-right-open">';
-                            echo '<a href="#">';
+                            $pesel = $_GET['pesel'];
+                            echo "<a href='personal.php?pesel=$pesel'>";
                             echo $row['name'].' '.$row['surname'];
                             echo '</a>';
                         }
@@ -40,7 +41,12 @@
             ?>
             <div class="nav_box">Umowy</div>
             </a>
+            <?php 
+            $pesel = $_GET['pesel'];
+            echo "<a href='zamowienia.php?pesel=$pesel'>"; 
+            ?>
             <div class="nav_box">Zamówienia</div>
+            </a>
             <div class="nav_box">Aktywności</div>
             <div class="nav_box">Sprawy</div>
             <div class="nav_box">Sprawy</div>
@@ -70,30 +76,34 @@
                 }
             ?>
         </div>
-        <div id="search">
-            <h3 style="margin-bottom: 1%">Szukaj</h3>
-            <form action="personal.php" method="get">
-                <div class="search_block">
-                    <input type="text" placeholder="PESEL" maxlength="11" name="pesel"> <!--only numbers -->
-                    <button type="submit" class="search_search_button" name="search"><span class="icon-right-open"></span></button>
-                </div>
-                <div class="search_block">
-                    <input type="text" placeholder="ID kontraktu" maxlength="11">
-                    <button type="submit" class="search_search_button"><span class="icon-right-open"></span></button>
-                </div>
-                <div class="search_block">
-                    <input type="text" placeholder="ID konta" maxlength="11">
-                    <button type="submit" class="search_search_button"><span class="icon-right-open"></span></button>
-                </div>
-                <div class="search_block">
-                    <input type="text" placeholder="Nr. karty" maxlength="11">
-                    <button type="submit" class="search_search_button"><span class="icon-right-open"></span></button>
-                    </div>
-                <div class="search_block">
-                    <input type="text" placeholder="MSISDN" maxlength="11">
-                    <button type="submit" class="search_search_button"><span class="icon-right-open"></span></button>
-                </div>
-            </form>
+        <div id="contracts">
+            <div class="contract_number_checked" style="grid-column: span 2; margin: 3%; padding: 2%; width: 50%; justify-self: center;">
+                <!-- 156443115 -->
+                <?php
+                if($_GET['pesel'] != "")
+                {
+                    $conn = mysqli_connect("localhost", "root", "", "crm");
+                    $from_form = $_GET['pesel'];
+                    $sql = "SELECT * FROM `personal`, `address` WHERE personal.pesel = $from_form AND address.pesel = $from_form";
+                    $query = mysqli_query($conn, $sql);
+                    foreach($query as $row)
+                    {
+                        $pesel = $_GET['pesel'];
+                        echo "<a href='personal.php?pesel=$pesel'>";
+                        echo $row['id_klienta'];
+                        echo "</a>";
+
+                    }
+                    mysqli_close($conn);
+                }
+                ?>
+            </div>
+            <div class="contract_number">
+                156443115
+            </div>
+            <div class="contract_number">
+                156443115
+            </div>
         </div>
         <main>
             <div id="main_personal">
@@ -117,6 +127,7 @@
                         echo '<div class="main_personal_grid">Imię:<a class="main_personal_grid_record">'.$row['name'].'</a></div>';
                         echo '<div class="main_personal_grid">Nazwisko:<a class="main_personal_grid_record">'.$row['surname'].'</a></div>';
                         echo '<div class="main_personal_grid">PESEL:<a class="main_personal_grid_record">'.$row['pesel'].'</a></div>';
+                        echo '<div class="main_personal_grid">ID klienta:<a class="main_personal_grid_record">'.$row['id_klienta'].'</a></div>';
                         echo '</div>';
                         // echo '<h2 style="float: right;">Dane osobowe</h2><br>';
                         echo '<div class="half_main_personal_grid">';

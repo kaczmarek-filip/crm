@@ -32,8 +32,9 @@
                                 echo '</a>';
 
                                 echo '<span class="icon-right-open">';
-                                echo "<a href='umowy.php?pesel=$pesel'>";
-                                echo 'Umowy';
+                                // $zamowienie = $_GET['zamowienie'];
+                                echo "<a href='zamowienia.php?pesel=$pesel'>";
+                                echo 'Zamówienia';
                                 echo '</a>';
                             }
                             mysqli_close($conn);
@@ -48,13 +49,13 @@
             ?>
             <div class="nav_box">Dane osobowe</div>
             </a>
-            <div class="nav_box_checked" class="nav_box">Umowy</div>
             <?php 
                 $pesel = $_GET['pesel'];
-                echo "<a href='zamowienia.php?pesel=$pesel'>"; 
+                echo "<a href='umowy.php?pesel=$pesel'>"; 
             ?>
-            <div class="nav_box">Zamówienia</div>
+            <div class="nav_box">Umowy</div>
             </a>
+            <div class="nav_box_checked" class="nav_box">Zamówienia</div>
             <div class="nav_box">Aktywności</div>
             <div class="nav_box">Sprawy</div>
             <div class="nav_box">Sprawy</div>
@@ -125,15 +126,19 @@
         </div>
         <main>
             <div id="main_personal">
-            <?php
+                <!-- <div class="main_personal_grid">Nazwisko:<p class="main_personal_grid_record">Kaczmarek</p></div>
+                <div class="main_personal_grid">Imię:<br>Filip</div>
+                <div class="main_personal_grid">02322106075</div>
+                <div class="main_personal_grid">ul. Reymonta</div> -->
+                <?php
                 if($_GET['pesel'] != "")
                 {
                     $conn = mysqli_connect("localhost", "root", "", "crm");
                     $from_form = $_GET['pesel'];
                     // $sql = "SELECT * FROM `personal` WHERE `pesel` = $from_form";
-                    $sql = "SELECT * FROM `personal`, `address`, `zamowienia`, `umowy` WHERE zamowienia.pesel = $from_form AND personal.pesel = $from_form AND address.pesel = $from_form;";
+                    $sql = "SELECT * FROM `personal`, `address`, `zamowienia` WHERE zamowienia.pesel = $from_form AND personal.pesel = $from_form AND address.pesel = $from_form;";
                     $query = mysqli_query($conn, $sql);
-                    echo '<h3 class="half_main_personal_grid_description" style="grid-column: span 2;"><span class="icon-down-open">Umowy<span class="icon-down-open"></h3>';
+                    echo '<h3 class="half_main_personal_grid_description" style="grid-column: span 2;"><span class="icon-down-open">Zamówienia<span class="icon-down-open"></h3>';
                     echo '<div class="zamowienia_record_description"><a>'.'Numer zamówienia'.'</a><a>'.'Status'.'</a><a>'.'Data utworzenia'.'</a><a>'.'Kanał realizacji'.'</a></div>';
                     echo '<div class="zamowienia" style="grid-column: span 2;">';
                     $n = 0;
@@ -141,7 +146,7 @@
                     {
 
                         // echo "<a href='personal.php?pesel=$pesel'>";
-                        echo '<div id="zamowienia_record'.$n.'"'.'class="zamowienia_record"><a class="zamowienia_record_a">'.$row['numer_umowy'].'</a><a class="zamowienia_record_a" style="grid-column: span 2;">'.$row['osoba_przekazujaca_do_realizacji'].'</a><a class="zamowienia_record_a">'.$row['data_utworzenia'].'</a><a class="zamowienia_record_a">'.$row['pakiet_podstawowy'].$row['pakiety_dodatkowe'].'</a></div>';
+                        echo '<div id="zamowienia_record'.$n.'"'.'class="zamowienia_record"><a class="zamowienia_record_a">'.$row['numer_zamowienia'].'</a><a class="zamowienia_record_a" style="grid-column: span 2;">'.$row['status'].'</a><a class="zamowienia_record_a">'.$row['data_utworzenia'].'</a><a class="zamowienia_record_a">'.$row['kanal_realizacji'].'</a></div>';
                         // echo "</a>";
                         echo '<script>';
                         $zamowienie = $row['numer_zamowienia'];
