@@ -98,12 +98,32 @@
                 }
                 ?>
             </div>
-            <div class="contract_number">
-                156443115
-            </div>
-            <div class="contract_number">
-                156443115
-            </div>
+            <?php
+                if($_GET['pesel'] != "")
+                {
+                    $conn = mysqli_connect("localhost", "root", "", "crm");
+                    $from_form = $_GET['pesel'];
+                    $sql = "SELECT * FROM `personal`, `address`, `umowy` WHERE personal.pesel = $from_form AND address.pesel = $from_form AND umowy.pesel = $from_form" ;
+                    $query = mysqli_query($conn, $sql);
+                    foreach($query as $row)
+                    {
+                        $pesel = $_GET['pesel'];
+                        // $numer_umowy = $_GET['numer_umowy'];
+                        echo "<a class='contract_number_a' href='umowa.php?pesel=$pesel&numer_umowy=".$row['numer_umowy']."'".'>';
+                        echo '<div class="contract_number">';
+                        echo $row['id_konta'];
+                        echo "</div>";
+                        echo "</a>";
+
+                        echo "<a class='contract_number_a' href='personal.php?pesel=$pesel'>";
+                        echo '<div class="contract_number">';
+                        echo $row['id_kontraktu'];
+                        echo "</div>";
+                        echo "</a>";
+                    }
+                    mysqli_close($conn);
+                }
+                ?>
         </div>
         <main>
             <div id="main_personal">

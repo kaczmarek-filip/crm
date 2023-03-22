@@ -168,7 +168,7 @@ nav a
 {
     box-shadow: 8px 13px 24px -23px rgba(66, 68, 90, 1);
 }
-.contract_number a, .contract_number_checked a
+.contract_number_a, .contract_number_checked a
 {
     text-decoration: none;
     color: black;
